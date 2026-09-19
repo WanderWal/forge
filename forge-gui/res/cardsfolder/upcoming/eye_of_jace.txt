@@ -1,0 +1,11 @@
+Name:Eye of Jace
+ManaCost:1
+Types:Artifact
+T:Mode$ Phase | Phase$ Upkeep | ValidPlayer$ You | TriggerZones$ Battlefield | Execute$ TrigSurveil | TriggerDescription$ At the beginning of your upkeep, surveil 1. Then if there are seven or more cards in your graveyard, sacrifice CARDNAME, it deals 2 damage to each opponent, and you gain 2 life.
+SVar:TrigSurveil:DB$ Surveil | Amount$ 1 | SubAbility$ DBBranch
+SVar:DBBranch:DB$ Branch | BranchConditionSVar$ GraveyardCount | BranchConditionSVarCompare$ GE7 | TrueSubAbility$ DBSacrifice
+SVar:DBSacrifice:DB$ Sacrifice | Defined$ Self | SubAbility$ DBDamage
+SVar:DBDamage:DB$ DealDamage | Defined$ Opponent | NumDmg$ 2 | SubAbility$ DBGainLife
+SVar:DBGainLife:DB$ GainLife | Defined$ You | LifeAmount$ 2
+SVar:GraveyardCount:Count$ValidGraveyard Card.YouOwn
+Oracle:At the beginning of your upkeep, surveil 1. Then if there are seven or more cards in your graveyard, sacrifice this artifact, it deals 2 damage to each opponent, and you gain 2 life. (To surveil 1, look at the top card of your library. You may put it into your graveyard.)
