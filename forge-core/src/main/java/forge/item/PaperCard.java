@@ -124,11 +124,10 @@ public class PaperCard implements Comparable<IPaperCard>, InventoryItemFromSet, 
         return artist;
     }
 
-    /* FIXME: At the moment, every card can get Foiled, with no restriction on the
-        corresponding Edition - so we could Foil even Alpha cards.
-    */
     public PaperCard getFoiled() {
         if (this.foil)
+            return this;
+        if (!editionAllowsFoil())
             return this;
 
         if (this.foiledVersion == null) {
@@ -137,6 +136,16 @@ public class PaperCard implements Comparable<IPaperCard>, InventoryItemFromSet, 
         }
         return this.foiledVersion;
     }
+
+    private boolean editionAllowsFoil() {
+        StaticData data = StaticData.instance();
+        if (data == null) {
+            return false;
+        }
+        CardEdition ed = data.getEditions().get(this.edition);
+        return ed != null && ed.getFoilType() != CardEdition.FoilType.NOT_SUPPORTED;
+    }
+
     public PaperCard getUnFoiled() {
         if (!this.foil)
             return this;
