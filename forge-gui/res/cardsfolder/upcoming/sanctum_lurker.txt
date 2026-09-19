@@ -1,0 +1,13 @@
+Name:Sanctum Lurker
+ManaCost:2 B
+Types:Creature Horror
+PT:3/2
+T:Mode$ ChangesZone | Origin$ Any | Destination$ Battlefield | ValidCard$ Card.Self | Execute$ TrigEmpower | TriggerDescription$ When this creature enters, empower Jace 1. (Put one loyalty counter on a Jace token you control. If you don't control one, first create a blue Jace planeswalker token with "[-1]: Surveil 1" and "[-3]: Draw a card.")
+SVar:TrigEmpower:DB$ Empower | Type$ Jace | Num$ 1
+R:Event$ Moved | ActiveZones$ Battlefield | Origin$ Battlefield | Destination$ Graveyard | ValidCard$ Planeswalker.YouCtrl+counters_LE0_LOYALTY | ReplaceWith$ DBStay | Description$ Planeswalkers you control aren't put into their owners' graveyards for having 0 loyalty.
+SVar:DBStay:DB$ Pump | Defined$ ReplacedCard | Duration$ Permanent
+S:Mode$ Continuous | Affected$ Planeswalker.YouCtrl | AddAbility$ PWSanctum | Description$ Planeswalkers you control have "[+2]: This planeswalker deals 1 damage to each opponent and you gain 1 life."
+SVar:PWSanctum:AB$ DealDamage | Cost$ AddCounter<2/LOYALTY> | Planeswalker$ True | Defined$ Player.Opponent | NumDmg$ 1 | SubAbility$ DBGainLife | SpellDescription$ This planeswalker deals 1 damage to each opponent and you gain 1 life.
+SVar:DBGainLife:DB$ GainLife | Defined$ You | LifeAmount$ 1
+DeckHints:Type$Planeswalker
+Oracle:When this creature enters, empower Jace 1. (Put one loyalty counter on a Jace token you control. If you don't control one, first create a blue Jace planeswalker token with "[-1]: Surveil 1" and "[-3]: Draw a card.")\nPlaneswalkers you control aren't put into their owners' graveyards for having 0 loyalty.\nPlaneswalkers you control have "[+2]: This planeswalker deals 1 damage to each opponent and you gain 1 life."
