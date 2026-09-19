@@ -47,11 +47,31 @@ Google no longer supports Android SDK releases for Eclipse.
 
 ### Windows
 
-TBD
+1. Install [JDK 17](https://adoptium.net/) (or later), [Git](https://git-scm.com/download/win), and [Maven](https://maven.apache.org/install.html). Confirm `java -version`, `git --version`, and `mvn -version` work in a terminal.
+2. Fork the project on GitHub, then clone your fork:
+   ```
+   git clone https://github.com/<your-username>/forge.git
+   cd forge
+   ```
+3. From the repo root, download dependencies and build a snapshot:
+   ```
+   mvn -U -B clean -P windows-linux install
+   ```
+4. Open the project in IntelliJ (recommended) using the [IntelliJ setup](https://github.com/Card-Forge/forge/wiki/IntelliJ-setup) guide, or import it into another Java IDE.
 
 ### Linux / Mac OSX
 
-TBD
+1. Install JDK 17 (or later), Git, and Maven via your package manager (e.g. `apt`, `dnf`, or Homebrew). Confirm `java -version`, `git --version`, and `mvn -version`.
+2. Fork the project on GitHub, then clone your fork:
+   ```
+   git clone https://github.com/<your-username>/forge.git
+   cd forge
+   ```
+3. From the repo root, download dependencies and build a snapshot with the same desktop profile used on Windows:
+   ```
+   mvn -U -B clean -P windows-linux install
+   ```
+4. Open the project in IntelliJ (recommended) using the [IntelliJ setup](https://github.com/Card-Forge/forge/wiki/IntelliJ-setup) guide, or import it into another Java IDE.
 
 ### Android Platform
 
