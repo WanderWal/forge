@@ -1,0 +1,7 @@
+Name:Mindseeker Oculus
+ManaCost:2 U
+Types:Creature Homunculus
+PT:2/1
+T:Mode$ ChangesZone | Origin$ Any | Destination$ Battlefield | ValidCard$ Card.Self | Execute$ TrigEmpower | TriggerDescription$ When this creature enters, empower Jace 4. (Put four loyalty counters on a Jace token you control. If you don't control one, first create a blue Jace planeswalker token with "[-1]: Surveil 1" and "[-3]: Draw a card.")
+SVar:TrigEmpower:DB$ Empower | Defined$ You | Type$ Jace | Num$ 4 | SpellDescription$ Empower Jace 4.
+Oracle:When this creature enters, empower Jace 4. (Put four loyalty counters on a Jace token you control. If you don't control one, first create a blue Jace planeswalker token with "[−1]: Surveil 1" and "[−3]: Draw a card.")

@@ -1,0 +1,8 @@
+Name:Loot, the Nexus
+ManaCost:2 G
+Types:Legendary Creature Beast Noble
+PT:2/1
+A:AB$ ChooseColor | Cost$ T | SubAbility$ DBMana | SpellDescription$ Choose a color. Add one mana of that color for each different power among creatures you control.
+SVar:DBMana:DB$ Mana | Produced$ Chosen | Amount$ X
+SVar:X:Count$Valid Creature.YouCtrl$DifferentCardPower
+Oracle:{T}: Choose a color. Add one mana of that color for each different power among creatures you control.

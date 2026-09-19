@@ -1,0 +1,16 @@
+Name:Konstrari Improviser
+ManaCost:1 R/G
+Types:Creature Human Artificer
+AlternateMode:PreparedSpell
+PT:2/2
+R:Event$ Moved | ValidCard$ Card.Self | Destination$ Battlefield | ReplacementResult$ Updated | ReplaceWith$ DBPrepare | Description$ This creature enters prepared. (While it's prepared, you may cast a copy of its spell. Doing so unprepares it.)
+SVar:DBPrepare:DB$ AlterAttribute | Defined$ Self | Attributes$ Prepared | ETB$ True
+Oracle:This creature enters prepared. (While it's prepared, you may cast a copy of its spell. Doing so unprepares it.)
+
+ALTERNATE
+
+Name:Soul Tether
+ManaCost:2 R/G
+Types:Sorcery
+A:SP$ Token | TokenAmount$ 1 | TokenScript$ rg_a_heartwood | SpellDescription$ Create a Heartwood token. (It's a red and green artifact with "{T}: Add {R} or {G}.")
+Oracle:Create a Heartwood token. (It's a red and green artifact with "{T}: Add {R} or {G}.")
