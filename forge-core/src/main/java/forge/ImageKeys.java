@@ -439,8 +439,14 @@ public final class ImageKeys {
                 File f = new File(CACHE_CARD_PICS_DIR + setFolder);  // no need to check this, otherwise editionHasImage would be false!
                 HashSet<String> setFolderContent = new HashSet<>();
                 for (String filename : Arrays.asList(f.list())) {
-                    // TODO: should this use FILE_EXTENSIONS ?
-                    if (!filename.endsWith(".jpg") && !filename.endsWith(".png"))
+                    boolean image = false;
+                    for (String ext : FILE_EXTENSIONS) {
+                        if (!ext.isEmpty() && filename.endsWith(ext)) {
+                            image = true;
+                            break;
+                        }
+                    }
+                    if (!image)
                         continue;  // not image - not interested
                     setFolderContent.add(filename.split("\\.")[0]);  // get rid of any full or fullborder
                     //preload cachedCards at startUp
