@@ -81,21 +81,41 @@ public class DialogTree extends JPanel {
     }
 
     public void removeSelectedData() {
-        //Todo: Enhance this to not collapse any nodes (after setSelectedData other paths are still collapsed)
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) dialogTree.getLastSelectedPathComponent();
 
         DialogData parentData = (DialogData) ((DefaultMutableTreeNode)selectedNode.getParent()).getUserObject();
         parentData.options = Arrays.stream(parentData.options).filter(q -> q != selectedNode.getUserObject()).toArray(DialogData[]::new);
        ((DefaultTreeModel) dialogTree.getModel()).removeNodeFromParent(selectedNode);
-        ((DefaultTreeModel) dialogTree.getModel()).reload();
 
         setSelectedData(parentData);
     }
     public void setSelectedData(DialogData data) {
-        // Find the node with the given data object and select it in the tree
+        List<TreePath> expanded = snapshotExpandedPaths();
         DefaultMutableTreeNode node = findNode((DefaultMutableTreeNode)dialogTree.getModel().getRoot(), data);
         if (node != null) {
             dialogTree.setSelectionPath(new TreePath(node.getPath()));
+        }
+        restoreExpandedPaths(expanded);
+    }
+
+    private List<TreePath> snapshotExpandedPaths() {
+        List<TreePath> expanded = new ArrayList<>();
+        Object root = dialogTree.getModel().getRoot();
+        if (root == null) {
+            return expanded;
+        }
+        java.util.Enumeration<TreePath> descendants = dialogTree.getExpandedDescendants(new TreePath(root));
+        if (descendants != null) {
+            while (descendants.hasMoreElements()) {
+                expanded.add(descendants.nextElement());
+            }
+        }
+        return expanded;
+    }
+
+    private void restoreExpandedPaths(List<TreePath> expanded) {
+        for (TreePath path : expanded) {
+            dialogTree.expandPath(path);
         }
     }
 
