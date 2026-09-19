@@ -599,23 +599,37 @@ public class ImageCache {
      * @param bufferedImage the image that will be crop
      */
     public static BufferedImage getCroppedArt(BufferedImage bufferedImage, float x, float y, float w, float h) {
-        //todo add support for other card frames ie split card, etc.
-        x = w * 0.1f;
-        y = h * 0.11f;
-        w -= 2 * x;
-        h *= 0.43f;
-        float ratioRatio = w / h / 1.302f;
-        if (ratioRatio > 1) { //if too wide, shrink width
-            float dw = w * (ratioRatio - 1);
-            w -= dw;
-            x += dw / 2;
+        // Split/horizontal scans share the same card jpg as portrait frames; there is no
+        // separate split-frame asset. Landscape images use CardRenderer split-art fractions.
+        if (bufferedImage.getWidth() > bufferedImage.getHeight()) {
+            w = bufferedImage.getWidth();
+            h = bufferedImage.getHeight();
+            x = w * 33f / 250f;
+            y = h * 13f / 354f;
+            w *= 106f / 250f;
+            h *= 150f / 354f;
+        } else {
+            x = w * 0.1f;
+            y = h * 0.11f;
+            w -= 2 * x;
+            h *= 0.43f;
+            float ratioRatio = w / h / 1.302f;
+            if (ratioRatio > 1) { //if too wide, shrink width
+                float dw = w * (ratioRatio - 1);
+                w -= dw;
+                x += dw / 2;
+            }
+            else { //if too tall, shrink height
+                float dh = h * (1 - ratioRatio);
+                h -= dh;
+                y += dh / 2;
+            }
         }
-        else { //if too tall, shrink height
-            float dh = h * (1 - ratioRatio);
-            h -= dh;
-            y += dh / 2;
-        }
-        return bufferedImage.getSubimage(Math.round(x), Math.round(y), Math.round(w), Math.round(h));
+        int ix = Math.max(0, Math.round(x));
+        int iy = Math.max(0, Math.round(y));
+        int iw = Math.min(bufferedImage.getWidth() - ix, Math.round(w));
+        int ih = Math.min(bufferedImage.getHeight() - iy, Math.round(h));
+        return bufferedImage.getSubimage(ix, iy, Math.max(1, iw), Math.max(1, ih));
     }
     /**
      * Returns the Image corresponding to the key.
