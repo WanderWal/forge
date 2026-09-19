@@ -1048,9 +1048,29 @@ public class Player extends GameEntity implements Comparable<Player> {
         final CardCollection topN = getTopXCardsFromLibrary(num);
 
         if (!topN.isEmpty()) {
-            final Pair<CardCollection, CardCollection> lists = getController().arrangeForSurveil(topN);
-            final CardCollection toTop = lists.getLeft();
-            final CardCollection toGrave = lists.getRight();
+            final CardCollection toTop;
+            final CardCollection toGrave;
+            if (topN.size() == 1) {
+                // Surveil 1: look, then library vs graveyard via confirmAction (remote-safe).
+                final Card looked = topN.getFirst();
+                getController().reveal(topN, ZoneType.Library, this);
+                final Localizer loc = Localizer.getInstance();
+                final boolean keepOnLibrary = getController().confirmAction(cause, null,
+                        loc.getMessage("lblPutCardsOnTheTopLibraryOrGraveyard", looked.getName()),
+                        Lists.newArrayList(loc.getMessage("lblLibrary"), loc.getMessage("lblGraveyard")),
+                        looked, params);
+                if (keepOnLibrary) {
+                    toTop = topN;
+                    toGrave = null;
+                } else {
+                    toTop = null;
+                    toGrave = topN;
+                }
+            } else {
+                final Pair<CardCollection, CardCollection> lists = getController().arrangeForSurveil(topN);
+                toTop = lists.getLeft();
+                toGrave = lists.getRight();
+            }
 
             int numToGrave = 0;
             int numToTop = 0;
