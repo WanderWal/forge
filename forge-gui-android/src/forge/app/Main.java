@@ -825,9 +825,7 @@ public class Main extends AndroidApplication {
 
         @Override
         public void exit() {
-            //TODO: Investigate why Gdx.app.exit() prevents restart once app is opened then close.
-            // Commented out and manage disposal manually
-            //Gdx.app.exit();
+            // Do not call Gdx.app.exit(): it System.exits the VM and blocks a later launch/restart.
             triggerDispose();
         }
 
@@ -950,6 +948,7 @@ public class Main extends AndroidApplication {
             // Ref: https://developer.android.com/about/versions/14/behavior-changes-14#safer-intents
             mainIntent.setPackage(context.getPackageName());
             context.startActivity(mainIntent);
+            finish();
             Runtime.getRuntime().exit(0);
         } catch (Exception e) {
             e.printStackTrace();
