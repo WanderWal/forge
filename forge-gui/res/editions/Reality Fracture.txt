@@ -77,6 +77,7 @@ ScryfallCode=FRA
 70 C Void Extrapolator @Valera Lutfullina
 71 R Vraska's Final Mercy @Magali Villeneuve
 72 R Ajani's Anguish @Mathias Kollros
+73 C Artifist Acumen @Anna Podedworna
 74 C Awaken the Inferno @Kai Carpenter
 75 C Blazing Crescendo @Billy Christian
 76 C Chandra's Emberling @Borja Pindado
@@ -209,6 +210,7 @@ ScryfallCode=FRA
 203 U Saheeli, Consul of Oversight @Billy Christian
 204 U Teyo, Lightshield Expert @Anna Steinbauer
 205 U Thalia, the Survivor @Ryan Pancoast
+206 U Tomik, Orzhov Lawmage @Randy Vargas
 207 U Way of the Healer @Pauline Voss
 208 U Way of the Mentor @Danny Schwartz
 209 U Yoshimaru, Beloved Companion @Brian Valeza
@@ -255,6 +257,7 @@ ScryfallCode=FRA
 250 U Pia, Determined Rebuilder @Andreas Zafiratos
 251 R Samut, Hazoret's Champion @Grzegorz Rutkowski
 252 U Tetsuko Umezawa, Pursuer @Tuan Duong Chu
+253 U Tomik, Izzet Sparkmage @Randy Vargas
 254 U Way of the Pyromancer @Andrey Kuzinskiy
 255 U Way of the Warlord @Danny Schwartz
 256 U Winter, Team Player @Aurore Folny
