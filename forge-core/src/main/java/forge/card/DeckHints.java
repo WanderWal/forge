@@ -208,7 +208,7 @@ public class DeckHints {
     }
 
     private Iterable<PaperCard> getMatchingItems(Iterable<PaperCard> source, Predicate<CardRules> predicate, Function<PaperCard, CardRules> fn) {
-        // TODO should token generators be counted differently for their potential?
+        // Token generators share the same potential weight by design: rulesWithTokens is a full filter hit.
         // And would there ever be a circumstance where `fn` should be anything but PaperCard::getRules?
         Predicate<CardRules> predicate1 = tokens ? rulesWithTokens(predicate) : predicate;
         return IterableUtil.filter(source, x -> predicate1.test(fn.apply(x)));
