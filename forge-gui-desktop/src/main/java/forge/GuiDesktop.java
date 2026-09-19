@@ -34,6 +34,7 @@ import forge.gui.CardListChooser;
 import forge.gui.CardListViewer;
 import forge.gui.FThreads;
 import forge.gui.GuiChoose;
+import forge.gui.SOverlayUtils;
 import forge.gui.download.GuiDownloadService;
 import forge.gui.framework.FScreen;
 import forge.gui.interfaces.IGuiBase;
@@ -396,8 +397,27 @@ public class GuiDesktop implements IGuiBase {
 
     @Override
     public void runBackgroundTask(String message, Runnable task) {
-        //TODO: Show loading overlay
-        FThreads.invokeInBackgroundThread(task);
+        if (GraphicsEnvironment.isHeadless()) {
+            FThreads.invokeInBackgroundThread(task);
+            return;
+        }
+        final String caption = StringUtils.isBlank(message) ? "Loading..." : message;
+        final Runnable showOverlay = () -> {
+            SOverlayUtils.startGameOverlay(caption);
+            SOverlayUtils.showOverlay();
+        };
+        if (isGuiThread()) {
+            showOverlay.run();
+        } else {
+            invokeInEdtAndWait(showOverlay);
+        }
+        FThreads.invokeInBackgroundThread(() -> {
+            try {
+                task.run();
+            } finally {
+                FThreads.invokeInEdtLater(SOverlayUtils::hideOverlay);
+            }
+        });
     }
 
     @Override
