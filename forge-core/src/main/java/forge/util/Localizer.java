@@ -77,19 +77,20 @@ public class Localizer {
     public String getEnglishMessage(final String key, final Object... messageArguments) {
         return getMessage(true, key, messageArguments);
     }
-    //FIXME: localizer should return default value from english locale or it will crash some GUI element like the NewGameMenu->NewGameScreen Popup when returned null...
     public String getMessage(final String key, final Object... messageArguments) {
         return getMessage(false, key, messageArguments);
     }
     public String getMessage(boolean forcedEnglish, final String key, final Object... messageArguments) {
         MessageFormat formatter = null;
         String rawValue = null;
+        final String missingEnglish = "INVALID PROPERTY: '" + key + "' -- Translation missing from English locale?";
 
         try {
-            //formatter = new MessageFormat(resourceBundle.getString(key.toLowerCase()), locale);
             rawValue = lookup(key, english || forcedEnglish);
-            formatter = new MessageFormat(rawValue, english || forcedEnglish ? Locale.ENGLISH : locale);
-        } catch (final IllegalArgumentException | MissingResourceException e) {
+            if (rawValue != null) {
+                formatter = new MessageFormat(rawValue, english || forcedEnglish ? Locale.ENGLISH : locale);
+            }
+        } catch (final IllegalArgumentException | MissingResourceException | NullPointerException e) {
             if (!silent)
                 e.printStackTrace();
         }
@@ -100,17 +101,23 @@ public class Localizer {
             }
 
             if (english || forcedEnglish) {
-                return "INVALID PROPERTY: '" + key + "' -- Translation missing from English?";
+                return missingEnglish;
             }
             try {
-                formatter = new MessageFormat(englishBundle.getString(key), Locale.ENGLISH);
-                forcedEnglish = true;
+                if (englishBundle == null) {
+                    return missingEnglish;
+                }
                 rawValue = englishBundle.getString(key);
-            } catch (final IllegalArgumentException | MissingResourceException e) {
+                if (rawValue == null) {
+                    return missingEnglish;
+                }
+                formatter = new MessageFormat(rawValue, Locale.ENGLISH);
+                forcedEnglish = true;
+            } catch (final IllegalArgumentException | MissingResourceException | NullPointerException e) {
                 if (!silent) {
                     e.printStackTrace();
                 }
-                return "INVALID PROPERTY: '" + key + "' -- Translation missing from English locale?";
+                return missingEnglish;
             }
         }
 
@@ -198,10 +205,17 @@ public class Localizer {
     private String lookup(final String key, final boolean forceEnglish) {
         if (!forceEnglish && adventureBundle != null) {
             try {
-                return adventureBundle.getString(key);
+                String adventureValue = adventureBundle.getString(key);
+                if (adventureValue != null) {
+                    return adventureValue;
+                }
             } catch (final MissingResourceException ignored) {}
         }
-        return (forceEnglish ? englishBundle : resourceBundle).getString(key);
+        ResourceBundle bundle = forceEnglish ? englishBundle : resourceBundle;
+        if (bundle == null) {
+            throw new MissingResourceException("bundle not loaded", Localizer.class.getName(), key);
+        }
+        return bundle.getString(key);
     }
 
     public void registerObserver(LocalizationChangeObserver observer) {
