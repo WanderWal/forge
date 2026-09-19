@@ -2,6 +2,7 @@ package forge.adventure.editor;
 
 import forge.adventure.data.DialogData;
 
+import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
@@ -39,7 +40,8 @@ public class ActionEdit extends FormPanel {
     public ActionEdit()
     {
 
-        //todo: add info pane to explain primary usage
+        JLabel usageInfo = new JLabel("<html>Primary usage: fill one or more fields below to apply that effect when the parent dialog option is chosen. Empty fields do nothing. Use this panel for quest/flag/map/combat/item side effects, not dialog text.</html>");
+        add(usageInfo);
 
         add("Issue Quest:",issueQuest);
         add("Set Map Flag Name:",mapFlagName);
