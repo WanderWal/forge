@@ -1,7 +1,7 @@
 Name:Konstrari Improviser
 ManaCost:1 R/G
 Types:Creature Human Artificer
-AlternateMode:PreparedSpell
+AlternateMode:Prepare
 PT:2/2
 R:Event$ Moved | ValidCard$ Card.Self | Destination$ Battlefield | ReplacementResult$ Updated | ReplaceWith$ DBPrepare | Description$ This creature enters prepared. (While it's prepared, you may cast a copy of its spell. Doing so unprepares it.)
 SVar:DBPrepare:DB$ AlterAttribute | Defined$ Self | Attributes$ Prepared | ETB$ True
