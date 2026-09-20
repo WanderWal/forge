@@ -1,0 +1,9 @@
+Name:Tam, the Possibility
+ManaCost:1 G U
+Types:Legendary Creature Gorgon Wizard
+PT:2/4
+S:Mode$ ReduceCost | ValidCard$ Planeswalker | Type$ Spell | Activator$ You | Amount$ 1 | Description$ Planeswalker spells you cast cost {1} less to cast.
+A:AB$ Proliferate | Cost$ W U B R G T | Amount$ X | SpellDescription$ Proliferate X times, where X is the number of planeswalker types among planeswalkers you control.
+SVar:X:Count$Valid Planeswalker.YouCtrl$AllTypes
+DeckHas:Ability$Proliferate
+Oracle:Planeswalker spells you cast cost {1} less to cast.\n{W}{U}{B}{R}{G}, {T}: Proliferate X times, where X is the number of planeswalker types among planeswalkers you control.
