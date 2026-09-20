@@ -1058,7 +1058,7 @@ public class Player extends GameEntity implements Comparable<Player> {
                 final boolean keepOnLibrary = getController().confirmAction(cause, null,
                         loc.getMessage("lblPutCardsOnTheTopLibraryOrGraveyard", looked.getName()),
                         Lists.newArrayList(loc.getMessage("lblLibrary"), loc.getMessage("lblGraveyard")),
-                        looked, params);
+                        looked, null);
                 if (keepOnLibrary) {
                     toTop = topN;
                     toGrave = null;
