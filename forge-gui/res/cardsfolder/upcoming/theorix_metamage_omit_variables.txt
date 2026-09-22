@@ -2,12 +2,15 @@ Name:Theorix Metamage
 ManaCost:2 UB
 Types:Creature Shade Wizard
 PT:2/3
-R:Event$ Moved | ValidCard$ Card.Self | Destination$ Battlefield | ReplacementResult$ Updated | ReplaceWith$ DBPrepare | Description$ This creature enters prepared. (While it's prepared, you may cast a copy of its spell. Doing so unprepares it.)
-SVar:DBPrepare:DB$ AlterAttribute | Attributes$ Prepared
+AlternateMode:Prepare
+K:ETBReplacement:Other:DBPrepare
+SVar:DBPrepare:DB$ AlterAttribute | Attributes$ Prepared | SpellDescription$ This creature enters prepared. (While it's prepared, you may cast a copy of its spell. Doing so unprepares it.)
 S:Mode$ Continuous | AffectedDefined$ Self | AddPower$ 1 | AddKeyword$ Flying | Condition$ Threshold | Description$ Threshold — This creature gets +1/+0 and has flying as long as there are seven or more cards in your graveyard.
 AlternateMode:Prepare
-Oracle:This creature enters prepared. (While it's prepared, you may cast a copy of its spell. Doing so unprepares it.)\nThreshold — This creature gets +1/+0 and has flying as long as there are seven or more cards in your graveyard.
+Oracle:This creature enters prepared. (While it’s prepared, you may cast a copy of its spell. Doing so unprepares it.)\nThreshold — This creature gets +1/+0 and has flying as long as there are seven or more cards in your graveyard.
+
 ALTERNATE
+
 Name:Omit Variables
 ManaCost:UB
 Types:Sorcery

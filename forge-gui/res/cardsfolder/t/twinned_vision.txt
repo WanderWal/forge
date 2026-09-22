@@ -1,7 +1,0 @@
-Name:Twinned Vision
-ManaCost:1 U/R
-Types:Instant
-A:SP$ Draw | NumCards$ X | SpellDescription$ Draw a card. If this spell wasn't cast from your hand, draw two cards instead.
-SVar:X:Count$wasCastFromYourHand.1.2
-K:Flashback:1 U/R U/R Discard<1/Card>
-Oracle:Draw a card. If this spell wasn't cast from your hand, draw two cards instead.\nFlashback—{1}{U/R}{U/R}, Discard a card. (You may cast this card from your graveyard for its flashback cost. Then exile it.)

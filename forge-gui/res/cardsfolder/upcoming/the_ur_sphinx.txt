@@ -2,12 +2,14 @@ Name:The Ur-Sphinx
 ManaCost:6 W U B
 Types:Legendary Creature Sphinx Avatar
 PT:10/10
-S:Mode$ ReduceCost | EffectZone$ Battlefield,Command | ValidCard$ Sphinx.Other | Type$ Spell | Activator$ You | Amount$ 1 | Description$ Eminence — As long as CARDNAME is in the command zone or on the battlefield, other Sphinx spells you cast cost {1} less to cast.
 K:Flying
-T:Mode$ AttackersDeclared | ValidAttackers$ Sphinx.YouCtrl | TriggerZones$ Battlefield | Execute$ TrigMill | TriggerDescription$ Whenever one or more Sphinxes you control attack, each player mills that many cards. For each player, you may cast a card that player milled this way without paying its mana cost.
-SVar:TrigMill:DB$ Mill | Defined$ Player | NumCards$ X | RememberMilled$ True | SubAbility$ DBEach
+S:Mode$ ReduceCost | EffectZone$ Battlefield,Command | ValidCard$ Sphinx.Other | Type$ Spell | Activator$ You | Amount$ 1 | Description$ Eminence — As long as CARDNAME is in the command zone or on the battlefield, other Sphinx spells you cast cost {1} less to cast.
+T:Mode$ AttackersDeclared | ValidAttackers$ Sphinx.YouCtrl | Execute$ TrigMill | TriggerZones$ Battlefield | TriggerDescription$ Whenever one or more Sphinxes you control attack, each player mills that many cards. For each player, you may cast a card that player milled this way without paying its mana cost.
+SVar:TrigMill:DB$ Mill | NumCards$ X | Defined$ Player | RememberMilled$ True | SubAbility$ DBRepeat
+SVar:DBRepeat:DB$ RepeatEach | RepeatPlayers$ Player | RepeatSubAbility$ DBChooseCard | SubAbility$ DBCastEach
+SVar:DBChooseCard:DB$ ChooseCard | Defined$ You | Choices$ Card.IsRemembered+nonLand+ControlledBy Remembered | ChoiceZone$ Graveyard | ImprintChosen$ True
+SVar:DBCastEach:DB$ Play | Valid$ Card.IsImprinted | ValidZone$ Graveyard | Amount$ All | ValidSA$ Spell | WithoutManaCost$ True | Optional$ True | AILogic$ ReplaySpell | SubAbility$ DBCleanup
+SVar:DBCleanup:DB$ Cleanup | ClearRemembered$ True | ClearImprinted$ True
 SVar:X:TriggerObjectsAttackers$Amount
-SVar:DBEach:DB$ RepeatEach | RepeatPlayers$ Player | RepeatSubAbility$ DBCast | SubAbility$ DBCleanup
-SVar:DBCast:DB$ Play | ValidZone$ Graveyard,Exile | Valid$ Card.IsRemembered+RememberedPlayerOwn | Controller$ You | WithoutManaCost$ True | ValidSA$ Spell | Optional$ True | Amount$ 1
-SVar:DBCleanup:DB$ Cleanup | ClearRemembered$ True
+DeckHints:Type$Sphinx
 Oracle:Eminence — As long as The Ur-Sphinx is in the command zone or on the battlefield, other Sphinx spells you cast cost {1} less to cast.\nFlying\nWhenever one or more Sphinxes you control attack, each player mills that many cards. For each player, you may cast a card that player milled this way without paying its mana cost.
