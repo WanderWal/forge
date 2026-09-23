@@ -53,6 +53,9 @@ public enum StaticAbilityMode {
     // StaticAbilityCombatDamageToughness
     CombatDamageToughness,
 
+    // StaticAbilityCombatDamageAbsolutePower
+    CombatDamageAbsolutePower,
+
     // StaticAbilityColorlessDamageSource
     ColorlessDamageSource,
 
@@ -154,6 +157,7 @@ public enum StaticAbilityMode {
     IgnoreLandwalk,
     // StaticAbilityIgnoreLegendRule
     IgnoreLegendRule,
+    IgnorePlaneswalkerZeroLoyaltyRule,
 
     // StaticAbilityMaxCounter
     MaxCounter,

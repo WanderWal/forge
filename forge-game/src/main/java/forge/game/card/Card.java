@@ -4535,7 +4535,15 @@ public class Card extends GameEntity implements Comparable<Card>, IHasSVars, ITr
 
     // How much combat damage does the card deal
     public final int getNetCombatDamage() {
-        return assignNoCombatDamage() ? 0 : (toughnessAssignsDamage() ? getNetToughnessBreakdown() : getNetPowerBreakdown()).getTotal();
+        if (assignNoCombatDamage()) {
+            return 0;
+        }
+        int damage = (toughnessAssignsDamage() ? getNetToughnessBreakdown() : getNetPowerBreakdown()).getTotal();
+        // Loot, the Anomaly: a negative power assigns combat damage as though it were positive
+        if (damage < 0 && StaticAbilityCombatDamageAbsolutePower.combatDamageAbsolutePower(this)) {
+            return -damage;
+        }
+        return damage;
     }
 
     // for cards like Giant Growth, etc.
@@ -7947,6 +7955,13 @@ public class Card extends GameEntity implements Comparable<Card>, IHasSVars, ITr
             return true;
         }
         return StaticAbilityIgnoreLegendRule.ignoreLegendRule(this);
+    }
+
+    public boolean ignorePlaneswalkerZeroLoyaltyRule() {
+        if (!getType().isPlaneswalker()) {
+            return true;
+        }
+        return StaticAbilityIgnoreZeroLoyalty.ignorePlaneswalkerZeroLoyaltyRule(this);
     }
 
     public boolean attackVigilance() {
