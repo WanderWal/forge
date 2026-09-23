@@ -369,7 +369,17 @@ public final class GameActionUtil {
             }
 
             if (o.getAbility().hasParam("ValidAfterStack")) {
-                newSA.getMapParams().put("ValidAfterStack", o.getAbility().getParam("ValidAfterStack"));
+                // Omnipresence "Spell.cmcLEX": X is the static's SVar, so resolve it here; on newSA it would read the cast card's SVars
+                String valid = o.getAbility().getParam("ValidAfterStack");
+                java.util.regex.Matcher m = java.util.regex.Pattern.compile("(LT|LE|EQ|NE|GE|GT)([A-Za-z]\\w*)").matcher(valid);
+                StringBuilder sb = new StringBuilder();
+                while (m.find()) {
+                    String svar = m.group(2);
+                    String value = o.getAbility().hasSVar(svar) ? Integer.toString(AbilityUtils.calculateAmount(host, svar, o.getAbility())) : svar;
+                    m.appendReplacement(sb, m.group(1) + value);
+                }
+                m.appendTail(sb);
+                newSA.getMapParams().put("ValidAfterStack", sb.toString());
             }
             if (o.getAbility().hasParam("RaiseCost")) {
                 String raise = o.getAbility().getParam("RaiseCost");
