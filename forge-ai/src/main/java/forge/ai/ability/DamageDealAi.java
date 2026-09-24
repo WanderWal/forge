@@ -913,8 +913,10 @@ public class DamageDealAi extends DamageAiBase {
         final Card source = sa.getHostCard();
         final String damage = sa.getParam("NumDmg");
         int dmg = calculateDamageAmount(sa, source, damage);
+        // an ETB trigger reads X from the cast spell (107.3k); only a trigger with its own X cost has X to choose
+        final boolean xToChoose = damage.equals("X") && sa.getSVar(damage).equals("Count$xPaid") && sa.getRootAbility().costHasManaX();
 
-        if (damage.equals("X") && sa.getSVar(damage).equals("Count$xPaid")) {
+        if (xToChoose) {
             dmg = ComputerUtilCost.setMaxXValue(sa, ai, true);
         }
 
@@ -933,7 +935,7 @@ public class DamageDealAi extends DamageAiBase {
                 return new AiAbilityDecision(0, AiPlayDecision.TargetingFailed);
             }
 
-            if (damage.equals("X") && sa.getSVar(damage).equals("Count$xPaid") && !sa.isDividedAsYouChoose()) {
+            if (xToChoose && !sa.isDividedAsYouChoose()) {
                 // If I can kill my target by paying less mana, do it
                 int actualPay = 0;
                 final boolean noPrevention = sa.hasParam("NoPrevention");
